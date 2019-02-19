@@ -9,11 +9,11 @@
 <h2> HTML List1 </h2>
 
 <ul>
-  <p><a href="#C1">1.�׽�Ʈ1 </a></p></li>
+  <p><a href="#C1">1.테스트1 </a></p></li>
   
-  <p><a href="#C2">2.�׽�Ʈ2 </a></p></li>
+  <p><a href="#C2">2.테스트2 </a></p></li>
   
-  <p><a href="#C3">3.�׽�Ʈ3 </a></p></li>
+  <p><a href="#C3">3.테스트3 </a></p></li>
   
 </ul>  
 <br></br>
@@ -28,11 +28,11 @@
 
 <ol>
 <h2 id="C1"> </h2>
-   <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> �׽�Ʈ1</a></li>
+   <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> 테스트1</a></li>
   
-  <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> �׽�Ʈ2</a></li>
+  <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> 테스트2</a></li>
   
-  <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> �׽�Ʈ3</a>
+  <li><a href="https://www.w3schools.com/html/tryit.asp?filename=tryhtml_attributes_img_src"> 테스트3</a>
 </ol> 
 
 <style>
