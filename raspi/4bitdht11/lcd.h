@@ -2,45 +2,7 @@
 #define LCDMODULEWITHDHT11_H_
 
 
-
 int dht11_dat[5] = { 0, 0, 0, 0, 0 };
-
-
-void StaticMessage(int lcd, char start, char line, char *message){
-	lcdPosition(lcd, start, line);
-	lcdPuts(lcd, message);
-}
-
-void ScrollRight(int lcd, char *message, char *message2){
-	for(char i = 0; i <10; i++){
-		lcdClear(lcd);
-		lcdPosition(lcd,i,0);
-		lcdPuts(lcd, message);
-		lcdPosition(lcd,i,1);
-		lcdPuts(lcd, message2);
-		delay(200);
-	}
-}
-
-
-void ScrollLeft(int lcd, char *message, char *message2){
-	for(char i = 0; i <10; i++){
-		lcdClear(lcd);
-		lcdPosition(lcd,9-i,0);
-		lcdPuts(lcd, message);
-		lcdPosition(lcd,9-i,1);
-		lcdPuts(lcd, message2);
-		delay(200);
-	}
-}
-
-void LcdEnd(int lcd, char start, char line, char *message){
-	lcdPosition(lcd,start,line);
-	lcdPuts(lcd,message);
-	delay(3000);
-	lcdClear(lcd);
-}
-
 
 void read_dht11_dat(int lcd,struct tm *date)
 {
@@ -95,9 +57,9 @@ void read_dht11_dat(int lcd,struct tm *date)
         lcdPrintf(lcd, "H:%d.%d%% T:%d.%dC %d/%d %d:%d:%d",dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3], date->tm_mon + 1 , date->tm_mday , date->tm_hour , date->tm_min, date ->tm_sec );
 
 	}else  {
-        StaticMessage(lcd,0,0, "Data not good, skip\n" );
+        lcdPrintf(lcd, "Data not good, skip");
     }
 }
 
 
-#endif /* LCDMODULEWITHDHT11_H_ */
+#endif
