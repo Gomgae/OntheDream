@@ -5,7 +5,7 @@
 #include <stdint.h>
 #define MAXTIMINGS    82
 #define DHTPIN        7  //wPi pin. physical num 7
-#include "lcdModuleWithDHT11.h"
+#include "lcd11.h"
 
 #define rs 29
 #define en 28
