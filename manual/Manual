@@ -1,2 +1,10 @@
-![Alt text](/path/to/img.jpg)
-![Alt text](/path/to/img.jpg "Optional title")
+### git init         : 새로운 local repository 생성
+### git add        : 변경된 파일을 storage에 추가
+### git commit   : add한 파일을 local repository에 저장
+### git push       : local repository를 remote repository에 업로드
+
+
+
+![title](http://fakeImgUrl.com/img/01.jpg)
+![title](/img/myComputer.png)
+![title](/img/myComputer.png){: width="100" height="100"}
