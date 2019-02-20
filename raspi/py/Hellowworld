@@ -1,0 +1,5 @@
+import tkinter
+root=tkinter.Tk()
+label=tkinter.Label(root, text='Hello tkinter')
+label.pack()
+root.mainloop()
