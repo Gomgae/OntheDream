@@ -1,0 +1,28 @@
+package test;
+
+import java.sql.*;
+import javax.sql.*;
+import javax.naming.*;
+
+public class DBTest {
+	public DBTest() {
+	Connection conn=null;
+	
+		try {
+			Context init = new InitialContext();
+			DataSource ds = (DataSource) init.lookup("java:comp/env/jdbc/aaa");
+			conn = ds.getConnection();
+			System.out.println("DB접속 성공");
+			
+		}catch(Exception e) {
+			System.out.println("DB접속 실패");
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			}catch(SQLException e) {
+			e.printStackTrace();
+			}
+		}
+	}
+}
