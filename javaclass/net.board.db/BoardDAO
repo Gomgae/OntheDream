@@ -1,0 +1,207 @@
+package net.board.db;
+
+import java.sql.*;
+import javax.naming.*;
+import javax.sql.*;
+import java.util.*;
+
+public class BoardDAO {
+
+	PreparedStatement pstmt;
+	ResultSet rs;
+	Connection conn;
+	
+	public BoardDAO() {
+		conn=null;
+		try {
+			Context init = new InitialContext();
+			DataSource ds = (DataSource) init.lookup("java:comp/env/jdbc/aaa");
+			conn = ds.getConnection();
+			System.out.println("DB접속 성공");
+			
+		}catch(Exception e) {
+			System.out.println("DB접속 실패");
+			e.printStackTrace();
+		}
+	}
+	
+	// 게시글 개수 구하기
+	public int getListCount() {
+		int count=0;
+		try{
+			pstmt=conn.prepareStatement("select count(*) from board");
+			rs=pstmt.executeQuery();
+			if(rs.next());
+			rs.getInt(1);		
+			count=rs.getInt(1);
+			System.out.println(count);
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs!=null)rs.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(pstmt!=null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	
+	// 글 내용 View
+	public BoardVO getDetail(int num) {
+		BoardVO board = null;
+		
+		try{
+			pstmt=conn.prepareStatement("select * from board where board_num=?");
+			pstmt.setInt(1, num);
+			rs=pstmt.executeQuery();
+			
+			board = new BoardVO();
+			
+			if(rs.next()) {
+			board.setBOARD_NUM(rs.getInt("BOARD_NUM"));
+			board.setBOARD_NAME(rs.getString("BOARD_NAME"));
+			board.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
+			board.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
+			board.setBOARD_PASS(rs.getString("BOARD_PASS"));
+			board.setBOARD_DATE(rs.getDate("BOARD_DATE"));
+			board.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
+			board.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
+			board.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
+			board.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
+			}
+			return board;
+		}catch(Exception e) {
+			System.out.println("글 상세 보기 에러"+e);
+		} finally {
+			try {
+				if(rs!=null)rs.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if(pstmt!=null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+		//db커넥션 닫기
+		public void dbclose() {
+			try {
+				if(conn!=null)
+					conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+		}
+	}
+		
+		
+		//게시글 목록 보기
+	public ArrayList<BoardVO> getBoardList(int page, int limit) {
+		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
+		BoardVO board = null;
+		int startrow=(page-1)*limit; // 읽기 시작할 row 번호
+		try {
+		pstmt=conn.prepareStatement("select * from board order by BOARD_RE_REF desc,BOARD_RE_SEQ asc limit ?,?");
+		pstmt.setInt(1, startrow); // 페이지랑 쿼리 작성했다 치고
+		pstmt.setInt(2,limit);
+		rs=pstmt.executeQuery();
+		
+		
+		while(rs.next()) {
+		board = new BoardVO();
+		
+		board.setBOARD_NUM(rs.getInt("BOARD_NUM"));
+		board.setBOARD_NAME(rs.getString("BOARD_NAME"));
+		board.setBOARD_SUBJECT(rs.getString("BOARD_SUBJECT"));
+		board.setBOARD_CONTENT(rs.getString("BOARD_CONTENT"));
+		board.setBOARD_PASS(rs.getString("BOARD_PASS"));
+		board.setBOARD_DATE(rs.getDate("BOARD_DATE"));
+		board.setBOARD_READCOUNT(rs.getInt("BOARD_READCOUNT"));
+		board.setBOARD_RE_REF(rs.getInt("BOARD_RE_REF"));
+		board.setBOARD_RE_LEV(rs.getInt("BOARD_RE_LEV"));
+		board.setBOARD_RE_SEQ(rs.getInt("BOARD_RE_SEQ"));
+		list.add(board);
+		}
+		}catch(Exception e) {
+			System.out.println("글 목록 보기 에러"+e);
+		} finally {
+			try {if(rs!=null)rs.close();
+			}catch(SQLException e){
+				e.printStackTrace();}
+			try{if(pstmt!=null)pstmt.close();
+			}catch(SQLException e) {
+				e.printStackTrace();}
+	}
+		
+		return list;	
+	}	
+	
+	
+	// 글 삭제
+	
+	public boolean boardDelete(int num) {
+		int result = 0;
+		
+		try{
+			pstmt=conn.prepareStatement("update board  set board_subject= '삭제' , board_content='삭제'  where board_num=?");
+			pstmt.setInt(1,num);
+			result=pstmt.executeUpdate();
+	
+			}catch(Exception e) {
+				System.out.println("글 삭제 에러"+e);
+			}finally{
+				try {
+				if(rs!=null)rs.close();
+				}catch(SQLException e){
+				e.printStackTrace();}
+				try{
+				if(pstmt!=null)pstmt.close();
+				}catch(SQLException e) {
+				e.printStackTrace();}
+		}
+		if(result!=0) {
+			return true;
+		}else {
+			return false;	
+		}
+	}
+		
+		// 글 수정
+	
+	public boolean boardModify(BoardVO modifyboard) {
+int result = 0;
+		try{
+			pstmt=conn.prepareStatement("update board set board_content = '글수정',board_subject='제목수정' where board_num=?");
+			pstmt.setString(1, modifyboard.getBOARD_SUBJECT());
+			pstmt.setString(2, modifyboard.getBOARD_CONTENT());
+			pstmt.setInt(3, modifyboard.getBOARD_NUM()); 
+			result=pstmt.executeUpdate();
+	
+			}catch(Exception e) {
+				System.out.println("글 수정 에러"+e);
+			}finally{
+				try {
+				if(rs!=null)rs.close();
+				}catch(SQLException e){
+				e.printStackTrace();}
+				try{
+				if(pstmt!=null)pstmt.close();
+				}catch(SQLException e) {
+				e.printStackTrace();}
+		}
+		if(result!=0) {
+			return true;
+		}else {
+			return false;	
+		}
+	}	
+}
+		
