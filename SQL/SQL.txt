@@ -1,0 +1,105 @@
+# 데이터베이스 선택
+use JHP; 
+
+# user 테이블 생성
+create table user(
+   no int not null auto_increment primary key, 
+   id varchar(20) not null, 
+    pass varchar(30) not null, 
+    name varchar(15) not null, 
+    email varchar(30) not null, 
+    contact varchar(20) not null, 
+    question varchar(30) not null, 
+    answer varchar(30) not null);
+    
+# user 테이블 삭제    
+drop table user; 
+
+# user 테이블 전체내용 표시
+select * FROM user;
+
+insert into user (id, pass, name, email, contact, question, answer) values("jun0289jun", "12345", "조영준", "jun0289jun@naver.com", "010-3252-0289", "나의 이름은?", "조영준");
+update user set id="merapa", pass="12345", name="박현우", email="merapa@naver.com", contact="010-8472-0801", question="나의 이름은?", answer="박현우" where no="1";
+update user set id="Gomgae", pass="12345", name="홍지원", email="Gomgae@naver.com", contact="010-5144-6003", question="나의 이름은?", answer="홍지원" where no="2";
+update user set id="jun0289jun", pass="12345", name="조영준", email="jun0289jun@naver.com", contact="010-3252-0289", question="나의 이름은?", answer="조영준" where no="3";
+update user set id="test", pass="12345", name="홍길동", email="Hong_test@naver.com", contact="010-1234-5678", question="좋아하는 스포츠는?", answer="암벽등반" where no="4";
+insert into user (id, pass, name, email, contact, question, answer) values("test", "12345", "test", "test@naver.com", "010-0000-0000", "나의 이름은?", "test");
+
+# user 테이블 내용 삭제
+delete FROM user where no=2;
+
+# control 테이블 생성
+create table control( 
+	 no int not null auto_increment primary key,
+    light_on varchar(20) , 
+    light_off varchar(20) , 
+    heater_on varchar(10) , 
+    heater_off varchar(10) , 
+    cooler_on varchar(10) , 
+    cooler_off varchar(10) , 
+    water_on varchar(10) , 
+    water_off varchar(10) , 
+	 feed1 varchar(20) , 
+	 feed2 varchar(20));
+	 
+# control 테이블 삭제	 
+drop table control;    
+
+# control 테이블 값 입력
+insert into control (light_on, light_off, heater_on, heater_off, cooler_on, cooler_off, water_on, water_off, feed1, feed2) 
+values("08:00", "20:00", "25℃", "28℃", "29℃", "28℃", "25cm", "26cm", "08:00", "20:00");
+
+# control 테이블 기존 입력값 수정
+update control set light_on="09:00", light_off="21:00", heater_on="26℃", heater_off="30℃", cooler_on="30℃", cooler_off="29℃", water_on="26cm", water_off="27℃", feed1="09:00", feed2="21:00" 
+where no="2";
+
+# control 테이블 전체 내용 표시
+SELECT * from control;
+
+# data 테이블 생성
+create table data( 
+	 no int not null auto_increment primary key,
+	 datetime TIMESTAMP DEFAULT NOW() ,
+    temp varchar(20) , 
+    water varchar(20));
+
+# data 테이블 삭제 
+drop table data; 
+
+# data 테이블 값 입력
+insert into data (datetime, temp, water) values(DEFAULT, "23℃", "25cm");
+
+# data 테이블전체 내용 표시
+select * FROM data;
+
+create table daiary( 
+	 no int not null auto_increment primary key,
+	 pno int null ,
+	 datetime TIMESTAMP DEFAULT NOW() ,
+    title varchar(30) , 
+    writer varchar(20) ,
+    contents varchar(100),
+	 pass varchar(30));
+
+insert into daiary (datetime, title, writer, contents, pass) values(default, "제목", "작성자", "내용", "1234");    
+insert into daiary (pno, datetime, title, writer, contents, pass) values("2", default, "제목", "작성자", "내용", "1234");
+
+select * FROM daiary;
+drop table daiary; 
+
+create table qna( 
+	 pno int null ,
+	 no int not null auto_increment primary key,
+	 datetime TIMESTAMP DEFAULT NOW() ,
+    title varchar(30) , 
+    writer varchar(20) ,
+    contents varchar(100),
+	 pass varchar(30));
+    
+    
+insert into qna (datetime, title, writer, contents, pass) values(default, "질문", "작성자", "질문내용", "1234");    
+insert into qna (pno, datetime, title, writer, contents, pass) values("2", default, "제목", "작성자", "내용", "1234");
+
+drop table qna; 
+
+select * FROM qna;
